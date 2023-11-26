@@ -51,11 +51,13 @@ function App() {
       <div className="App">
         <h1>Quiz Game</h1>
         <input
+          className="name-input"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <button
+          className="name-button"
           onClick={() => {
             setStart(true);
             socket.connect();
@@ -73,7 +75,7 @@ function App() {
       <div className="player-name">
         <h1>Username: {username}</h1>
         {incorrect ? (
-          <p>Incorrect answer, please wait til next question</p>
+          <p className="incorrect">Incorrect answer, please wait til next question</p>
         ) : (
           <>
             <p className="read-the-docs">{question}</p>
@@ -134,18 +136,26 @@ function App() {
                 </li>
               ))}
             </ol>
-            <textarea
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-            ></textarea>
-            <button
-              onClick={() => {
-                socket.emit("message", { message: newMessage, user: username });
-                setNewMessage("");
-              }}
-            >
-              Send
-            </button>
+            <div className="chat-area">
+              <textarea
+                className="chat-input"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+              ></textarea>
+              <br/>
+              <button
+                className="chat-button"
+                onClick={() => {
+                  socket.emit("message", {
+                    message: newMessage,
+                    user: username,
+                  });
+                  setNewMessage("");
+                }}
+              >
+                Send
+              </button>
+            </div>
           </div>
         )}{" "}
       </div>
