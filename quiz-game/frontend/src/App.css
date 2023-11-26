@@ -54,7 +54,7 @@
   width: 200px;
   border-radius: 10px;
   border: 2px solid #ffffff;
-  color: grey;
+  color: black;
   background: hsla(208, 7%, 55%, 1);
 
   background: linear-gradient(90deg, hsla(208, 7%, 55%, 1) 0%, hsla(191, 5%, 40%, 1) 100%);
