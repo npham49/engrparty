@@ -1,10 +1,32 @@
-const io = require('socket.io')();
+const express = require("express")
+const {Server} = require('socket.io')
+const http = require("http")
 const { initGame, gameLoop, getUpdatedVelocity } = require('./game');
 const { FRAME_RATE } = require('./constants');
 const { makeid } = require('./utils');
 
 const state = {};
 const clientRooms = {};
+
+const app = express()
+
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080");
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+
+// Our server
+const server = http.createServer(app);
+
+// Setup socket.io to use our server
+const io = new Server(server, {
+  cors: {
+    origin: "http://127.0.0.1:8080"
+  }
+});
+
 
 io.on('connection', client => {
 
@@ -14,6 +36,9 @@ io.on('connection', client => {
 
   function handleJoinGame(roomName) {
     const room = io.sockets.adapter.rooms[roomName];
+    console.log(roomName)
+    console.log(io.sockets.adapter.rooms)
+    console.log(io.sockets.adapter.rooms[roomName])
 
     let allUsers;
     if (room) {
@@ -94,9 +119,12 @@ function emitGameState(room, gameState) {
     .emit('gameState', JSON.stringify(gameState));
 }
 
+
 function emitGameOver(room, winner) {
   io.sockets.in(room)
     .emit('gameOver', JSON.stringify({ winner }));
 }
 
-io.listen(process.env.PORT || 3000);
+PORT = process.env.PORT || 3000
+
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
