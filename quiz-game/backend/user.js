@@ -28,6 +28,10 @@ const correctAnswer = (id) => {
   return users;
 }
 
+const getUsers = () => {
+  return users;
+}
+
 const removeUser = (id) => {
   users = users.filter(user => user.id !== id);
   userscount--;
@@ -42,4 +46,4 @@ const getUsersCouhnt = () => {
   return userscount;
 }
 
-module.exports = { addUser, correctAnswer, removeUser, getUsersCouhnt };
+module.exports = { addUser, correctAnswer, removeUser, getUsersCouhnt, getUsers };

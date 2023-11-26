@@ -6,6 +6,7 @@ function App() {
   const [race,setRace]= useState("");
   const [target,setTarget]= useState(""); // [1
   const [start, setStart] = useState(false);
+  const [races, setRaces] = useState([]); // [1
   const [racerWinner, setRacerWinner] = useState(""); // [1
   const [username, setUsername] = useState("Ano"); // [1
   const [question, setQuestion] = useState("");
@@ -54,6 +55,10 @@ function App() {
   socket.on("start-racer", (term)=> {
     setGameType("Racer");
     setTarget(term);
+  })
+
+  socket.on("update-races",(races)=> {
+    setRaces(races)
   })
 
   socket.on("racer-done", ()=> {
@@ -137,7 +142,13 @@ function App() {
           ></textarea>
           </>
       )}
-
+      <ul>
+      {gameType === "Racer" && races.length>0 && races.map((race,index)=> 
+        <li key={index}>
+          {race.name} : {race.race}
+        </li>
+      )}
+</ul>
       {racerWinner!=="" && (
         <>
         <h1>Racer</h1>
