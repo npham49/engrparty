@@ -75,7 +75,9 @@ function App() {
       <div className="player-name">
         <h1>Username: {username}</h1>
         {incorrect ? (
-          <p className="incorrect">Incorrect answer, please wait til next question</p>
+          <p className="incorrect">
+            Incorrect answer, please wait til next question
+          </p>
         ) : (
           <>
             <p className="read-the-docs">{question}</p>
@@ -142,7 +144,7 @@ function App() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
               ></textarea>
-              <br/>
+              <br />
               <button
                 className="chat-button"
                 onClick={() => {
