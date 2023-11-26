@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "./App.css";
 function App() {
+  const [gameType, setGameType] = useState("Quiz"); // [1
+  const [race,setRace]= useState("");
+  const [target,setTarget]= useState(""); // [1
   const [start, setStart] = useState(false);
+  const [racerWinner, setRacerWinner] = useState(""); // [1
   const [username, setUsername] = useState("Ano"); // [1
   const [question, setQuestion] = useState("");
   const [board, setBoard] = useState([]); // [2
@@ -13,7 +17,20 @@ function App() {
 
   const socket = io.connect("http://localhost:3000");
 
+  const handleChange = (e) => {
+    setRace(e.target.value)
+    socket.emit("race",{race:race,user:username})
+  };
+
+  const handleMessage = (e) => {
+    setNewMessage(e.target.value);
+  };
+
   socket.on("question", (question) => {
+    if (!question) {
+      setGameType("Racer");
+      return
+    }
     setQuestion(question.question);
   });
 
@@ -34,13 +51,27 @@ function App() {
     setIncorrect(false);
   });
 
-  socket.on("end", () => {
-    alert("Congratulations! You answered all questions correctly.");
-  });
+  socket.on("start-racer", (term)=> {
+    setGameType("Racer");
+    setTarget(term);
+  })
+
+  socket.on("racer-done", ()=> {
+    // get persojn with biggest score from user list
+    users.forEach(user => {
+      if(user.score===Math.max(...users.map(user=>user.score))){
+        setRacerWinner(user.id);
+      }
+    }
+    )
+  }
+  )
+
   socket.on("messages", (messages) => {
     setBoard(messages);
   });
   useEffect(() => {
+    socket.emit("question")
     return () => {
       socket.disconnect();
     };
@@ -58,6 +89,7 @@ function App() {
         <button
           onClick={() => {
             setStart(true);
+            setGameType("Quiz");
             socket.connect();
             socket.emit("start", { user: username, score: 0 });
           }}
@@ -71,47 +103,68 @@ function App() {
   return (
     <>
       <h1>username: {username}</h1>
-      {incorrect ? (
-        <p>Incorrect answer, please wait til next question</p>
-      ) : (
+      {gameType === "Quiz" && (
         <>
-          <p className="read-the-docs">{question}</p>
-          <input
-            type="text"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              socket.emit("answer", { answer: answer, user: username });
-              setAnswer("");
-            }}
-          >
-            Submit
-          </button>
+          {incorrect ? (
+            <p>Incorrect answer, please wait til next question</p>
+          ) : (
+            <>
+              <p className="read-the-docs">{question}</p>
+              <input
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+              />
+              <button
+                onClick={() => {
+                  socket.emit("answer", { answer: answer, user: username });
+                  setAnswer("");
+                }}
+              >
+                Submit
+              </button>
+            </>
+          )}
         </>
       )}
-      {users && (
-        <div>
-          <h2>Leaderboard</h2>
-          <ol>
-            {users.map((user) => (
-              <li key={user.id}>
-                {user.id} Score: {user.score}
-              </li>
-            ))}
-          </ol>
-        </div>
+      {gameType === "Racer" && racerWinner==="" && (
+        <>
+        <h1>Racer</h1>
+        <h2>Enter after finished typing</h2>
+        <p>Word: {target}</p>
+          <textarea
+          onChange={handleChange}
+          ></textarea>
+          </>
+      )}
+
+      {racerWinner!=="" && (
+        <>
+        <h1>Racer</h1>
+        <p>Winner: {racerWinner}</p>
+        </>
       )}
       <button
         onClick={() => {
-          socket.emit("end", username);
+          socket.emit("leave", username);
           socket.disconnect();
           setStart(false);
         }}
       >
         End Game
       </button>
+      {users && (
+            <div>
+              <h2>Leaderboard</h2>
+              <ol>
+                {users.map((user) => (
+                  <li key={user.id}>
+                    {user.id} Score: {user.score}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}{" "}
       {board && (
         <div
           style={{
@@ -130,7 +183,7 @@ function App() {
           </ol>
           <textarea
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleMessage}
           ></textarea>
           <button
             onClick={() => {
