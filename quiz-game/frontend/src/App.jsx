@@ -70,27 +70,31 @@ function App() {
 
   return (
     <>
-      <h1>username: {username}</h1>
-      {incorrect ? (
-        <p>Incorrect answer, please wait til next question</p>
-      ) : (
-        <>
-          <p className="read-the-docs">{question}</p>
-          <input
-            type="text"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              socket.emit("answer", { answer: answer, user: username });
-              setAnswer("");
-            }}
-          >
-            Submit
-          </button>
-        </>
-      )}
+      <div className="player-name">
+        <h1>Username: {username}</h1>
+        {incorrect ? (
+          <p>Incorrect answer, please wait til next question</p>
+        ) : (
+          <>
+            <p className="read-the-docs">{question}</p>
+            <input
+              className="name-input"
+              type="text"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+            <button
+              className="name-button"
+              onClick={() => {
+                socket.emit("answer", { answer: answer, user: username });
+                setAnswer("");
+              }}
+            >
+              Submit
+            </button>
+          </>
+        )}
+      </div>
       {users && (
         <div>
           <h2>Leaderboard</h2>
@@ -112,36 +116,39 @@ function App() {
       >
         End Game
       </button>
-      {board && (
-        <div
-          style={{
-            border: "1px solid black",
-            width: "300px",
-            height: "300px",
-          }}
-        >
-          <h2>Messages</h2>
-          <ol>
-            {board.map((user, index) => (
-              <li key={index}>
-                {user.user} : {user.message}
-              </li>
-            ))}
-          </ol>
-          <textarea
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          ></textarea>
-          <button
-            onClick={() => {
-              socket.emit("message", { message: newMessage, user: username });
-              setNewMessage("");
+      <div className="chat-box">
+        {board && (
+          <div
+            className="chat-frame"
+            style={{
+              border: "1px solid black",
+              width: "300px",
+              height: "300px",
             }}
           >
-            Send
-          </button>
-        </div>
-      )}{" "}
+            <h2>Messages</h2>
+            <ol>
+              {board.map((user, index) => (
+                <li key={index}>
+                  {user.user} : {user.message}
+                </li>
+              ))}
+            </ol>
+            <textarea
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+            ></textarea>
+            <button
+              onClick={() => {
+                socket.emit("message", { message: newMessage, user: username });
+                setNewMessage("");
+              }}
+            >
+              Send
+            </button>
+          </div>
+        )}{" "}
+      </div>
     </>
   );
 }

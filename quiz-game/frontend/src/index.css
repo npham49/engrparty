@@ -42,9 +42,17 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  background: hsla(30, 78%, 47%, 1);
+
+  background: linear-gradient(90deg, hsla(30, 78%, 47%, 1) 0%, hsla(326, 52%, 44%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(30, 78%, 47%, 1) 0%, hsla(326, 52%, 44%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(30, 78%, 47%, 1) 0%, hsla(326, 52%, 44%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#D4781A", endColorstr="#AA3678", GradientType=1 );
 }
 button:hover {
   border-color: #646cff;

@@ -10,6 +10,7 @@
   /* For 100% screen height */
   width: 100vw;
   /* For 100% screen width */
+
 }
 
 .logo {
@@ -48,6 +49,42 @@
   color: #888;
 }
 
-.App {
-  background-color: blue;
+.name-input {
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+  color: grey;
+  background: hsla(208, 7%, 55%, 1);
+
+  background: linear-gradient(90deg, hsla(208, 7%, 55%, 1) 0%, hsla(191, 5%, 40%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(208, 7%, 55%, 1) 0%, hsla(191, 5%, 40%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(208, 7%, 55%, 1) 0%, hsla(191, 5%, 40%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#858E96", endColorstr="#60696B", GradientType=1 );
+}
+.name-button {
+  margin-left: 20px;
+}
+.player-name > h1 {
+  color: #E4B51A;
+}
+
+/* .chat-box {
+  background-color: #ffffff;
+} */
+
+.chat-frame {
+  border-radius: 30px;
+  background: hsla(35, 79%, 68%, 1);
+
+  background: linear-gradient(90deg, hsla(35, 79%, 68%, 1) 0%, hsla(286, 44%, 49%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(35, 79%, 68%, 1) 0%, hsla(286, 44%, 49%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(35, 79%, 68%, 1) 0%, hsla(286, 44%, 49%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#EEB86D", endColorstr="#9946B2", GradientType=1 );
 }
