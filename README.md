@@ -23,3 +23,8 @@ Want to have fun whilst fine tuning your developer skills? Challenge you friend 
 4. Problem solving
 5. Strategy
 
+### Challenges 
+We have time limitation and limited knowledge of how to run WebSocket
+Make the complex idea into real world working system
+Solving marge conflicts
+Things are more depricated than the tutorials
